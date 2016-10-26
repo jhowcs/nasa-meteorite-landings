@@ -2,6 +2,8 @@ package com.jhowcs.nasameteoritelandings.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -9,14 +11,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.jhowcs.nasameteoritelandings.R;
+import com.jhowcs.nasameteoritelandings.adapter.NasaMeteoriteAdapter;
 import com.jhowcs.nasameteoritelandings.model.NasaMeteoriteLandings;
 import com.jhowcs.nasameteoritelandings.presenter.NasaMeteoritePresenter;
-import com.jhowcs.nasameteoritelandings.service.MeteoriteLandingService;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.http.Query;
 
 public class MainActivity extends AppCompatActivity implements MainView {
 
@@ -25,7 +24,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private RelativeLayout rlRetry;
     private ImageView imgRetry;
 
-    private NasaMeteoritePresenter presenter;
+    private NasaMeteoriteAdapter mAdapter;
+    private NasaMeteoritePresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,21 +36,28 @@ public class MainActivity extends AppCompatActivity implements MainView {
         rlProgress   = (RelativeLayout) findViewById(R.id.rl_progress);
         rlRetry      = (RelativeLayout) findViewById(R.id.rl_retry);
 
-        presenter = new NasaMeteoritePresenter(this);
+        mPresenter = new NasaMeteoritePresenter(this);
+        mAdapter = new NasaMeteoriteAdapter();
+
+        setupRecyclerView();
+    }
+
+    private void setupRecyclerView() {
+        rvMeteorites.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        rvMeteorites.setItemAnimator(new DefaultItemAnimator());
+        rvMeteorites.setAdapter(mAdapter);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        presenter.loadMeteoriteList();
+        mPresenter.loadMeteoriteList();
     }
 
     @Override
     public void renderMeteoriteList(List<NasaMeteoriteLandings> nasaMeteoriteLandings) {
-        for (NasaMeteoriteLandings value : nasaMeteoriteLandings) {
-            Log.d("TAG", value.getName());
-        }
+        mAdapter.setListMeteoriteLandings(nasaMeteoriteLandings);
     }
 
     @Override
