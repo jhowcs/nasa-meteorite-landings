@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.jhowcs.nasameteoritelandings.R;
 import com.jhowcs.nasameteoritelandings.model.NasaMeteoriteLandings;
+import com.jhowcs.nasameteoritelandings.util.ClickListener;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -20,6 +21,8 @@ import java.util.List;
 public class NasaMeteoriteAdapter extends RecyclerView.Adapter<NasaMeteoriteAdapter.NasaMeteoriteViewHolder> {
 
     private List<NasaMeteoriteLandings> mMeteoriteLandings;
+
+    private ClickListener<NasaMeteoriteLandings> mListener;
 
     public NasaMeteoriteAdapter() {
         this.mMeteoriteLandings = Collections.EMPTY_LIST;
@@ -51,15 +54,29 @@ public class NasaMeteoriteAdapter extends RecyclerView.Adapter<NasaMeteoriteAdap
         notifyDataSetChanged();
     }
 
-    public class NasaMeteoriteViewHolder extends RecyclerView.ViewHolder {
+    public void setClickListener(ClickListener listener) {
+        mListener = listener;
+    }
+
+    public class NasaMeteoriteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView txtName, txtMass, txtClass;
 
         public NasaMeteoriteViewHolder(View itemView) {
             super(itemView);
+
+            itemView.setOnClickListener(this);
+
             txtName = (TextView) itemView.findViewById(R.id.txtMeteoriteName);
             txtMass = (TextView) itemView.findViewById(R.id.txtMeteoriteMass);
             txtClass= (TextView) itemView.findViewById(R.id.txtMeteoriteClass);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if(mListener != null) {
+                mListener.onItemClicked(mMeteoriteLandings.get(getAdapterPosition()));
+            }
         }
     }
 }

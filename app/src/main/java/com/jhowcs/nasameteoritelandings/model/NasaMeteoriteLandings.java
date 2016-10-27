@@ -1,10 +1,13 @@
 
 package com.jhowcs.nasameteoritelandings.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class NasaMeteoriteLandings {
+public class NasaMeteoriteLandings implements Parcelable {
 
     @SerializedName("fall")
     @Expose
@@ -36,6 +39,23 @@ public class NasaMeteoriteLandings {
     @SerializedName("year")
     @Expose
     private String year;
+
+
+    private NasaMeteoriteLandings(Parcel in) {
+        fall = in.readString();
+        geolocation = in.readParcelable(Geolocation.class.getClassLoader());
+        id = in.readString();
+        mass = in.readString();
+        name = in.readString();
+        nametype = in.readString();
+        recclass = in.readString();
+        reclat = in.readString();
+        reclong = in.readString();
+        year = in.readString();
+    }
+
+    public NasaMeteoriteLandings() {
+    }
 
     /**
      * 
@@ -217,4 +237,35 @@ public class NasaMeteoriteLandings {
         this.year = year;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(fall);
+        parcel.writeParcelable(geolocation, i);
+        parcel.writeString(id);
+        parcel.writeString(mass);
+        parcel.writeString(name);
+        parcel.writeString(nametype);
+        parcel.writeString(recclass);
+        parcel.writeString(reclat);
+        parcel.writeString(reclong);
+        parcel.writeString(year);
+    }
+
+    public static final Parcelable.Creator<NasaMeteoriteLandings> CREATOR =
+            new Creator<NasaMeteoriteLandings>() {
+                @Override
+                public NasaMeteoriteLandings createFromParcel(Parcel parcel) {
+                    return new NasaMeteoriteLandings(parcel);
+                }
+
+                @Override
+                public NasaMeteoriteLandings[] newArray(int size) {
+                    return new NasaMeteoriteLandings[size];
+                }
+            };
 }

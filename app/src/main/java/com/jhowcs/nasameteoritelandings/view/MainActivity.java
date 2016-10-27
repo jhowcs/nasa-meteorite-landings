@@ -1,5 +1,6 @@
 package com.jhowcs.nasameteoritelandings.view;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,10 +15,11 @@ import com.jhowcs.nasameteoritelandings.R;
 import com.jhowcs.nasameteoritelandings.adapter.NasaMeteoriteAdapter;
 import com.jhowcs.nasameteoritelandings.model.NasaMeteoriteLandings;
 import com.jhowcs.nasameteoritelandings.presenter.NasaMeteoritePresenter;
+import com.jhowcs.nasameteoritelandings.util.ClickListener;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MainView {
+public class MainActivity extends AppCompatActivity implements MainView, View.OnClickListener, ClickListener<NasaMeteoriteLandings> {
 
     private RecyclerView rvMeteorites;
     private RelativeLayout rlProgress;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         rvMeteorites = (RecyclerView) findViewById(R.id.rv_meteorites);
         rlProgress   = (RelativeLayout) findViewById(R.id.rl_progress);
         rlRetry      = (RelativeLayout) findViewById(R.id.rl_retry);
+        imgRetry     = (ImageView) findViewById(R.id.imgRetry);
 
         mPresenter = new NasaMeteoritePresenter(this);
         mAdapter = new NasaMeteoriteAdapter();
@@ -42,10 +45,18 @@ public class MainActivity extends AppCompatActivity implements MainView {
         setupRecyclerView();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+    }
+
     private void setupRecyclerView() {
         rvMeteorites.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         rvMeteorites.setItemAnimator(new DefaultItemAnimator());
         rvMeteorites.setAdapter(mAdapter);
+
+
     }
 
     @Override
@@ -57,7 +68,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void renderMeteoriteList(List<NasaMeteoriteLandings> nasaMeteoriteLandings) {
-        mAdapter.setListMeteoriteLandings(nasaMeteoriteLandings);
+        if(nasaMeteoriteLandings != null) {
+            mAdapter.setListMeteoriteLandings(nasaMeteoriteLandings);
+            mAdapter.setClickListener(this);
+        }
     }
 
     @Override
@@ -78,5 +92,21 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void onHideRetry() {
         rlRetry.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.imgRetry) {
+            mPresenter.loadMeteoriteList();
+        }
+    }
+
+    @Override
+    public void onItemClicked(NasaMeteoriteLandings meteoriteLandingsObj) {
+        Intent intent = new Intent(this, NasaMeteoriteDetail.class);
+
+        intent.putExtra(NasaMeteoriteDetail.NASA_METEORITE_PARCELABLE, meteoriteLandingsObj);
+
+        startActivity(intent);
     }
 }
