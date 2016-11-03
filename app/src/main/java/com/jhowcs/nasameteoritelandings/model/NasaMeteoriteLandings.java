@@ -7,6 +7,8 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Comparator;
+
 public class NasaMeteoriteLandings implements Parcelable {
 
     @SerializedName("fall")
@@ -40,6 +42,18 @@ public class NasaMeteoriteLandings implements Parcelable {
     @Expose
     private String year;
 
+    public static final Parcelable.Creator<NasaMeteoriteLandings> CREATOR =
+            new Creator<NasaMeteoriteLandings>() {
+                @Override
+                public NasaMeteoriteLandings createFromParcel(Parcel parcel) {
+                    return new NasaMeteoriteLandings(parcel);
+                }
+
+                @Override
+                public NasaMeteoriteLandings[] newArray(int size) {
+                    return new NasaMeteoriteLandings[size];
+                }
+            };
 
     private NasaMeteoriteLandings(Parcel in) {
         fall = in.readString();
@@ -256,16 +270,14 @@ public class NasaMeteoriteLandings implements Parcelable {
         parcel.writeString(year);
     }
 
-    public static final Parcelable.Creator<NasaMeteoriteLandings> CREATOR =
-            new Creator<NasaMeteoriteLandings>() {
+    public static final Comparator<NasaMeteoriteLandings> meteoriteSizeComparator =
+            new Comparator<NasaMeteoriteLandings>() {
                 @Override
-                public NasaMeteoriteLandings createFromParcel(Parcel parcel) {
-                    return new NasaMeteoriteLandings(parcel);
-                }
+                public int compare(NasaMeteoriteLandings t1, NasaMeteoriteLandings t2) {
+                    Double m1 = Double.valueOf(t1.getMass());
+                    Double m2 = Double.valueOf(t2.getMass());
 
-                @Override
-                public NasaMeteoriteLandings[] newArray(int size) {
-                    return new NasaMeteoriteLandings[size];
+                    return m1.compareTo(m2);
                 }
             };
 }

@@ -1,12 +1,11 @@
 package com.jhowcs.nasameteoritelandings.view;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -20,6 +19,8 @@ import com.jhowcs.nasameteoritelandings.util.ClickListener;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainView, View.OnClickListener, ClickListener<NasaMeteoriteLandings> {
+
+    private static final String ADAPTER_SAVED = "ADAPTER_SAVED";
 
     private RecyclerView rvMeteorites;
     private RelativeLayout rlProgress;
@@ -35,12 +36,18 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         setContentView(R.layout.activity_main);
 
         rvMeteorites = (RecyclerView) findViewById(R.id.rv_meteorites);
-        rlProgress   = (RelativeLayout) findViewById(R.id.rl_progress);
-        rlRetry      = (RelativeLayout) findViewById(R.id.rl_retry);
-        imgRetry     = (ImageView) findViewById(R.id.imgRetry);
+        rlProgress = (RelativeLayout) findViewById(R.id.rl_progress);
+        rlRetry = (RelativeLayout) findViewById(R.id.rl_retry);
+        imgRetry = (ImageView) findViewById(R.id.imgRetry);
 
         mPresenter = new NasaMeteoritePresenter(this);
-        mAdapter = new NasaMeteoriteAdapter();
+
+        if(savedInstanceState == null) {
+            mAdapter = new NasaMeteoriteAdapter();
+            mPresenter.loadMeteoriteList();
+        } else {
+            mAdapter = savedInstanceState.getParcelable(ADAPTER_SAVED);
+        }
 
         setupRecyclerView();
     }
@@ -49,21 +56,13 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
+        outState.putParcelable(ADAPTER_SAVED, mAdapter);
     }
 
     private void setupRecyclerView() {
         rvMeteorites.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         rvMeteorites.setItemAnimator(new DefaultItemAnimator());
         rvMeteorites.setAdapter(mAdapter);
-
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        mPresenter.loadMeteoriteList();
     }
 
     @Override

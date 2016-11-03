@@ -7,6 +7,7 @@ import com.jhowcs.nasameteoritelandings.service.MeteoriteLandingService;
 import com.jhowcs.nasameteoritelandings.util.DateUtil;
 import com.jhowcs.nasameteoritelandings.view.MainView;
 
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -43,6 +44,8 @@ public class NasaMeteoritePresenter {
             @Override
             public void onResponse(Call<List<NasaMeteoriteLandings>> call, Response<List<NasaMeteoriteLandings>> response) {
                 List<NasaMeteoriteLandings> landingsList = response.body();
+
+                Collections.sort(landingsList, NasaMeteoriteLandings.meteoriteSizeComparator);
 
                 mMainView.renderMeteoriteList(landingsList);
 
