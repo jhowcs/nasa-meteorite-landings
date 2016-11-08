@@ -1,26 +1,37 @@
 package com.jhowcs.nasameteoritelandings.view;
 
+import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.jhowcs.nasameteoritelandings.R;
 import com.jhowcs.nasameteoritelandings.adapter.NasaMeteoriteAdapter;
+import com.jhowcs.nasameteoritelandings.data.DBContract;
+import com.jhowcs.nasameteoritelandings.datasync.SyncAdapter;
 import com.jhowcs.nasameteoritelandings.model.NasaMeteoriteLandings;
 import com.jhowcs.nasameteoritelandings.presenter.NasaMeteoritePresenter;
 import com.jhowcs.nasameteoritelandings.util.ClickListener;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MainView, View.OnClickListener, ClickListener<NasaMeteoriteLandings> {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
+        MainView,
+        View.OnClickListener,
+        ClickListener<NasaMeteoriteLandings>{
 
     private static final String ADAPTER_SAVED = "ADAPTER_SAVED";
+    private static final int LOADER_ID = 1;
 
     private RecyclerView rvMeteorites;
     private RelativeLayout rlProgress;
@@ -29,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
 
     private NasaMeteoriteAdapter mAdapter;
     private NasaMeteoritePresenter mPresenter;
+
+    private final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +57,13 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
 
         if(savedInstanceState == null) {
             mAdapter = new NasaMeteoriteAdapter();
-            mPresenter.loadMeteoriteList();
+            //mPresenter.loadMeteoriteList();
+            SyncAdapter.syncImmediately(this);
         } else {
             mAdapter = savedInstanceState.getParcelable(ADAPTER_SAVED);
         }
 
+        getLoaderManager().initLoader(LOADER_ID , null , this);
         setupRecyclerView();
     }
 
@@ -68,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     @Override
     public void renderMeteoriteList(List<NasaMeteoriteLandings> nasaMeteoriteLandings) {
         if(nasaMeteoriteLandings != null) {
-            mAdapter.setListMeteoriteLandings(nasaMeteoriteLandings);
+            //mAdapter.setListMeteoriteLandings(nasaMeteoriteLandings);
             mAdapter.setClickListener(this);
         }
     }
@@ -107,5 +122,23 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         intent.putExtra(NasaMeteoriteDetail.NASA_METEORITE_PARCELABLE, meteoriteLandingsObj);
 
         startActivity(intent);
+    }
+
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        return new CursorLoader(this, DBContract.MeteorLandEntry.CONTENT_URI, null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        Log.d(TAG, "onLoadFinished");
+        mAdapter.setCursor(cursor);
+        mAdapter.setClickListener(this);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mAdapter.setCursor(null);
     }
 }

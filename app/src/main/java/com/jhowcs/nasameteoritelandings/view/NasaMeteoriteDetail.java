@@ -53,12 +53,13 @@ public class NasaMeteoriteDetail extends AppCompatActivity implements OnMapReady
         mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
 
         LatLng latLng;
-        latLng = new LatLng(Double.parseDouble(mMeteoriteObj.getReclat()), Double.parseDouble(mMeteoriteObj.getReclong()));
+        latLng = new LatLng(mMeteoriteObj.getReclat(), mMeteoriteObj.getReclong());
 
         mGoogleMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .title(mMeteoriteObj.getName())
-                .snippet("Mass: ".concat(mMeteoriteObj.getMass()))).showInfoWindow();
+        //        .snippet("Mass: ".concat(mMeteoriteObj.getMass()))
+        ).showInfoWindow();
 
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 8f);
         mGoogleMap.moveCamera(cameraUpdate);
