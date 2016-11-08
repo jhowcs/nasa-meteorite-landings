@@ -22,7 +22,7 @@ public class NasaMeteoriteLandings implements Parcelable {
     private String id;
     @SerializedName("mass")
     @Expose
-    private String mass;
+    private double mass;
     @SerializedName("name")
     @Expose
     private String name;
@@ -34,10 +34,10 @@ public class NasaMeteoriteLandings implements Parcelable {
     private String recclass;
     @SerializedName("reclat")
     @Expose
-    private String reclat;
+    private double reclat;
     @SerializedName("reclong")
     @Expose
-    private String reclong;
+    private double reclong;
     @SerializedName("year")
     @Expose
     private String year;
@@ -59,12 +59,12 @@ public class NasaMeteoriteLandings implements Parcelable {
         fall = in.readString();
         geolocation = in.readParcelable(Geolocation.class.getClassLoader());
         id = in.readString();
-        mass = in.readString();
+        mass = in.readDouble();
         name = in.readString();
         nametype = in.readString();
         recclass = in.readString();
-        reclat = in.readString();
-        reclong = in.readString();
+        reclat = in.readDouble();
+        reclong = in.readDouble();
         year = in.readString();
     }
 
@@ -130,7 +130,7 @@ public class NasaMeteoriteLandings implements Parcelable {
      * @return
      *     The mass
      */
-    public String getMass() {
+    public double getMass() {
         return mass;
     }
 
@@ -139,7 +139,7 @@ public class NasaMeteoriteLandings implements Parcelable {
      * @param mass
      *     The mass
      */
-    public void setMass(String mass) {
+    public void setMass(double mass) {
         this.mass = mass;
     }
 
@@ -202,7 +202,7 @@ public class NasaMeteoriteLandings implements Parcelable {
      * @return
      *     The reclat
      */
-    public String getReclat() {
+    public double getReclat() {
         return reclat;
     }
 
@@ -211,7 +211,7 @@ public class NasaMeteoriteLandings implements Parcelable {
      * @param reclat
      *     The reclat
      */
-    public void setReclat(String reclat) {
+    public void setReclat(double reclat) {
         this.reclat = reclat;
     }
 
@@ -220,7 +220,7 @@ public class NasaMeteoriteLandings implements Parcelable {
      * @return
      *     The reclong
      */
-    public String getReclong() {
+    public double getReclong() {
         return reclong;
     }
 
@@ -229,7 +229,7 @@ public class NasaMeteoriteLandings implements Parcelable {
      * @param reclong
      *     The reclong
      */
-    public void setReclong(String reclong) {
+    public void setReclong(double reclong) {
         this.reclong = reclong;
     }
 
@@ -261,12 +261,12 @@ public class NasaMeteoriteLandings implements Parcelable {
         parcel.writeString(fall);
         parcel.writeParcelable(geolocation, i);
         parcel.writeString(id);
-        parcel.writeString(mass);
+        parcel.writeDouble(mass);
         parcel.writeString(name);
         parcel.writeString(nametype);
         parcel.writeString(recclass);
-        parcel.writeString(reclat);
-        parcel.writeString(reclong);
+        parcel.writeDouble(reclat);
+        parcel.writeDouble(reclong);
         parcel.writeString(year);
     }
 
@@ -274,8 +274,8 @@ public class NasaMeteoriteLandings implements Parcelable {
             new Comparator<NasaMeteoriteLandings>() {
                 @Override
                 public int compare(NasaMeteoriteLandings t1, NasaMeteoriteLandings t2) {
-                    Double m1 = Double.valueOf(t1.getMass());
-                    Double m2 = Double.valueOf(t2.getMass());
+                    Double m1 = t1.getMass();
+                    Double m2 = t2.getMass();
 
                     return m1.compareTo(m2);
                 }

@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Nasa Meteorite Landings</string>
+    <string name="app_name">Meteor Land</string>
+    <string name="content_authority">com.jhowcs.nasameteoritelandings.datasync.provider</string>
+    <string name="sync_account_type">meteorland.com</string>
 </resources>

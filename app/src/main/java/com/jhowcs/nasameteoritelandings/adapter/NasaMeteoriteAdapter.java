@@ -1,5 +1,6 @@
 package com.jhowcs.nasameteoritelandings.adapter;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
@@ -10,10 +11,8 @@ import android.widget.TextView;
 
 import com.jhowcs.nasameteoritelandings.R;
 import com.jhowcs.nasameteoritelandings.model.NasaMeteoriteLandings;
+import com.jhowcs.nasameteoritelandings.repository.MeteoriteLandingsRepository;
 import com.jhowcs.nasameteoritelandings.util.ClickListener;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by jonathan_campos on 26/10/2016.
@@ -21,7 +20,7 @@ import java.util.List;
 
 public class NasaMeteoriteAdapter extends RecyclerView.Adapter<NasaMeteoriteAdapter.NasaMeteoriteViewHolder> implements Parcelable {
 
-    private List<NasaMeteoriteLandings> mListMeteoriteLandings;
+    private Cursor mCursor;
 
     private ClickListener<NasaMeteoriteLandings> mListener;
 
@@ -38,11 +37,9 @@ public class NasaMeteoriteAdapter extends RecyclerView.Adapter<NasaMeteoriteAdap
     };
 
     public NasaMeteoriteAdapter() {
-        this.mListMeteoriteLandings = Collections.EMPTY_LIST;
     }
 
     protected NasaMeteoriteAdapter(Parcel in) {
-        mListMeteoriteLandings = in.createTypedArrayList(NasaMeteoriteLandings.CREATOR);
     }
 
     @Override
@@ -54,21 +51,16 @@ public class NasaMeteoriteAdapter extends RecyclerView.Adapter<NasaMeteoriteAdap
 
     @Override
     public void onBindViewHolder(NasaMeteoriteViewHolder holder, int position) {
-        NasaMeteoriteLandings nasaMeteoriteLandings = mListMeteoriteLandings.get(position);
+        NasaMeteoriteLandings nasaMeteoriteLandings = getItem(position);
 
         holder.txtName.setText(nasaMeteoriteLandings.getName());
-        holder.txtMass.setText(nasaMeteoriteLandings.getMass());
+        holder.txtMass.setText(String.valueOf(nasaMeteoriteLandings.getMass()));
         holder.txtClass.setText(nasaMeteoriteLandings.getRecclass());
     }
 
     @Override
     public int getItemCount() {
-        return mListMeteoriteLandings.size();
-    }
-
-    public void setListMeteoriteLandings(List<NasaMeteoriteLandings> nasaMeteoriteLandings) {
-        mListMeteoriteLandings = nasaMeteoriteLandings;
-        notifyDataSetChanged();
+        return (mCursor == null) ? 0 : mCursor.getCount();
     }
 
     public void setClickListener(ClickListener listener) {
@@ -82,7 +74,6 @@ public class NasaMeteoriteAdapter extends RecyclerView.Adapter<NasaMeteoriteAdap
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeTypedList(mListMeteoriteLandings);
     }
 
     public class NasaMeteoriteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -102,8 +93,19 @@ public class NasaMeteoriteAdapter extends RecyclerView.Adapter<NasaMeteoriteAdap
         @Override
         public void onClick(View view) {
             if(mListener != null) {
-                mListener.onItemClicked(mListMeteoriteLandings.get(getAdapterPosition()));
+                mListener.onItemClicked(getItem(getAdapterPosition()));
             }
         }
+    }
+
+    public void setCursor(Cursor newCursor) {
+        mCursor = newCursor;
+        notifyDataSetChanged();
+    }
+
+    private NasaMeteoriteLandings getItem(int position) {
+        mCursor.moveToPosition(position);
+
+        return MeteoriteLandingsRepository.nasaMeteoriteLandingsFromCursor(mCursor);
     }
 }

@@ -16,6 +16,7 @@ import com.jhowcs.nasameteoritelandings.BuildConfig;
 import com.jhowcs.nasameteoritelandings.R;
 import com.jhowcs.nasameteoritelandings.data.DBContract;
 import com.jhowcs.nasameteoritelandings.model.NasaMeteoriteLandings;
+import com.jhowcs.nasameteoritelandings.repository.MeteoriteLandingsRepository;
 import com.jhowcs.nasameteoritelandings.service.BaseAPI;
 import com.jhowcs.nasameteoritelandings.service.MeteoriteLandingService;
 import com.jhowcs.nasameteoritelandings.util.DateUtil;
@@ -81,6 +82,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         if(response != null) {
             Cursor cursor = null;
 
+            MeteoriteLandingsRepository repository = new MeteoriteLandingsRepository(getContext());
+
             for (NasaMeteoriteLandings obj: response.body()) {
                 cursor = mContentResolver.query(DBContract.MeteorLandEntry.CONTENT_URI,
                         null,
@@ -90,21 +93,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 if(cursor != null && cursor.getCount() <=0) {
                     cursor.close();
 
-                    ContentValues cv = new ContentValues();
-                    cv.put(DBContract.MeteorLandEntry.COLUMN_ID, obj.getId());
-                    cv.put(DBContract.MeteorLandEntry.COLUMN_FALL, obj.getFall());
-                    cv.put(DBContract.MeteorLandEntry.COLUMN_TYPE, obj.getGeolocation().getType());
-                    cv.put(DBContract.MeteorLandEntry.COLUMN_LATITUDE, obj.getGeolocation().getCoordinates().get(1));
-                    cv.put(DBContract.MeteorLandEntry.COLUMN_LONGITUDE, obj.getGeolocation().getCoordinates().get(0));
-                    cv.put(DBContract.MeteorLandEntry.COLUMN_MASS, obj.getMass());
-                    cv.put(DBContract.MeteorLandEntry.COLUMN_NAME, obj.getName());
-                    cv.put(DBContract.MeteorLandEntry.COLUMN_NAMETYPE, obj.getNametype());
-                    cv.put(DBContract.MeteorLandEntry.COLUMN_RECCLASS, obj.getRecclass());
-                    cv.put(DBContract.MeteorLandEntry.COLUMN_RECLAT, obj.getReclat());
-                    cv.put(DBContract.MeteorLandEntry.COLUMN_RECLONG, obj.getReclong());
-                    cv.put(DBContract.MeteorLandEntry.COLUMN_YEAR, obj.getYear());
-
-                    mContentResolver.insert(DBContract.MeteorLandEntry.CONTENT_URI, cv);
+                    repository.insert(obj);
 
                     Log.d(TAG, "Saving new record");
                 }
