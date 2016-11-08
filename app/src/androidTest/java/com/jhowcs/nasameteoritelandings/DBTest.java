@@ -7,7 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.jhowcs.nasameteoritelandings.database.DBHelper;
+import com.jhowcs.nasameteoritelandings.data.DBContract;
+import com.jhowcs.nasameteoritelandings.data.DBHelper;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,9 +18,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Created by jonathan_campos on 03/11/2016.
@@ -40,13 +41,13 @@ public class DBTest {
 
     @Test
     public void deleteDatabase() {
-        mContext.deleteDatabase(DBHelper.DATABASE_NAME);
+        mContext.deleteDatabase(DBContract.MeteorLandEntry.TABLE_NAME);
     }
 
     @Test
     public void createDatabase() {
         final Set<String> tables = new HashSet<>();
-        tables.add(DBHelper.METEORITE_TABLE);
+        tables.add(DBContract.MeteorLandEntry.TABLE_NAME);
 
         deleteDatabase();
 
@@ -64,23 +65,23 @@ public class DBTest {
         assertTrue("Database created without tables!", tables.isEmpty());
 
         // verify if tables contain the correct columns
-        cursor = db.rawQuery("PRAGMA table_info(" + DBHelper.METEORITE_TABLE + ")", null);
+        cursor = db.rawQuery("PRAGMA table_info(" + DBContract.MeteorLandEntry.TABLE_NAME + ")", null);
 
         assertTrue("Error: unable to query the database for table information.", cursor.moveToFirst());
 
         final Set<String> meteoriteHashSet = new HashSet<>();
-        meteoriteHashSet.add(DBHelper.COLUMN_ID);
-        meteoriteHashSet.add(DBHelper.COLUMN_FALL);
-        meteoriteHashSet.add(DBHelper.COLUMN_TYPE);
-        meteoriteHashSet.add(DBHelper.COLUMN_LATITUDE);
-        meteoriteHashSet.add(DBHelper.COLUMN_LONGITUDE);
-        meteoriteHashSet.add(DBHelper.COLUMN_MASS);
-        meteoriteHashSet.add(DBHelper.COLUMN_NAME);
-        meteoriteHashSet.add(DBHelper.COLUMN_NAMETYPE);
-        meteoriteHashSet.add(DBHelper.COLUMN_RECCLASS);
-        meteoriteHashSet.add(DBHelper.COLUMN_RECLAT);
-        meteoriteHashSet.add(DBHelper.COLUMN_RECLONG);
-        meteoriteHashSet.add(DBHelper.COLUMN_YEAR);
+        meteoriteHashSet.add(DBContract.MeteorLandEntry.COLUMN_ID);
+        meteoriteHashSet.add(DBContract.MeteorLandEntry.COLUMN_FALL);
+        meteoriteHashSet.add(DBContract.MeteorLandEntry.COLUMN_TYPE);
+        meteoriteHashSet.add(DBContract.MeteorLandEntry.COLUMN_LATITUDE);
+        meteoriteHashSet.add(DBContract.MeteorLandEntry.COLUMN_LONGITUDE);
+        meteoriteHashSet.add(DBContract.MeteorLandEntry.COLUMN_MASS);
+        meteoriteHashSet.add(DBContract.MeteorLandEntry.COLUMN_NAME);
+        meteoriteHashSet.add(DBContract.MeteorLandEntry.COLUMN_NAMETYPE);
+        meteoriteHashSet.add(DBContract.MeteorLandEntry.COLUMN_RECCLASS);
+        meteoriteHashSet.add(DBContract.MeteorLandEntry.COLUMN_RECLAT);
+        meteoriteHashSet.add(DBContract.MeteorLandEntry.COLUMN_RECLONG);
+        meteoriteHashSet.add(DBContract.MeteorLandEntry.COLUMN_YEAR);
 
         int columnNameIndex = cursor.getColumnIndex("name");
         do {
@@ -100,27 +101,27 @@ public class DBTest {
 
         ContentValues cv = new ContentValues();
 
-        cv.put(DBHelper.COLUMN_ID, 56661);
-        cv.put(DBHelper.COLUMN_FALL, "Found");
-        cv.put(DBHelper.COLUMN_TYPE, "Point");
-        cv.put(DBHelper.COLUMN_LATITUDE, "-24.85");
-        cv.put(DBHelper.COLUMN_LONGITUDE, "-70.53333");
-        cv.put(DBHelper.COLUMN_MASS, "84");
-        cv.put(DBHelper.COLUMN_NAME, "El Médano 115");
-        cv.put(DBHelper.COLUMN_NAMETYPE, "Valid");
-        cv.put(DBHelper.COLUMN_RECCLASS, "H5");
-        cv.put(DBHelper.COLUMN_RECLAT, "-24.850000");
-        cv.put(DBHelper.COLUMN_RECLONG, "-70.533330");
-        cv.put(DBHelper.COLUMN_YEAR, "2011-01-01T00:00:00.000");
+        cv.put(DBContract.MeteorLandEntry.COLUMN_ID, 56661);
+        cv.put(DBContract.MeteorLandEntry.COLUMN_FALL, "Found");
+        cv.put(DBContract.MeteorLandEntry.COLUMN_TYPE, "Point");
+        cv.put(DBContract.MeteorLandEntry.COLUMN_LATITUDE, "-24.85");
+        cv.put(DBContract.MeteorLandEntry.COLUMN_LONGITUDE, "-70.53333");
+        cv.put(DBContract.MeteorLandEntry.COLUMN_MASS, "84");
+        cv.put(DBContract.MeteorLandEntry.COLUMN_NAME, "El Médano 115");
+        cv.put(DBContract.MeteorLandEntry.COLUMN_NAMETYPE, "Valid");
+        cv.put(DBContract.MeteorLandEntry.COLUMN_RECCLASS, "H5");
+        cv.put(DBContract.MeteorLandEntry.COLUMN_RECLAT, "-24.850000");
+        cv.put(DBContract.MeteorLandEntry.COLUMN_RECLONG, "-70.533330");
+        cv.put(DBContract.MeteorLandEntry.COLUMN_YEAR, "2011-01-01T00:00:00.000");
 
         // insert a row in the database
-        long idReturned = db.insert(DBHelper.METEORITE_TABLE, null, cv);
+        long idReturned = db.insert(DBContract.MeteorLandEntry.TABLE_NAME, null, cv);
 
         assertTrue("Error: some problem happen when tried to insert a row.", idReturned != -1);
 
         // Query the database
         Cursor cursor = db.query(
-                DBHelper.METEORITE_TABLE,
+                DBContract.MeteorLandEntry.TABLE_NAME,
                 null, // all columns
                 null, // where clause
                 null, // values for where clause
