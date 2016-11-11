@@ -127,12 +127,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        onShowProgress();
         return new CursorLoader(this, DBContract.MeteorLandEntry.CONTENT_URI, null, null, null, null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         Log.d(TAG, "onLoadFinished");
+        onHideProgress();
         mAdapter.setCursor(cursor);
         mAdapter.setClickListener(this);
     }
