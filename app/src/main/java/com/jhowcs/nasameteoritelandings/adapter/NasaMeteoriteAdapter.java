@@ -55,7 +55,6 @@ public class NasaMeteoriteAdapter extends RecyclerView.Adapter<NasaMeteoriteAdap
 
         holder.txtName.setText(nasaMeteoriteLandings.getName());
         holder.txtMass.setText(String.valueOf(nasaMeteoriteLandings.getMass()));
-        holder.txtClass.setText(nasaMeteoriteLandings.getRecclass());
     }
 
     @Override
@@ -78,7 +77,7 @@ public class NasaMeteoriteAdapter extends RecyclerView.Adapter<NasaMeteoriteAdap
 
     public class NasaMeteoriteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView txtName, txtMass, txtClass;
+        private TextView txtName, txtMass;
 
         public NasaMeteoriteViewHolder(View itemView) {
             super(itemView);
@@ -87,7 +86,6 @@ public class NasaMeteoriteAdapter extends RecyclerView.Adapter<NasaMeteoriteAdap
 
             txtName = (TextView) itemView.findViewById(R.id.txtMeteoriteName);
             txtMass = (TextView) itemView.findViewById(R.id.txtMeteoriteMass);
-            txtClass= (TextView) itemView.findViewById(R.id.txtMeteoriteClass);
         }
 
         @Override

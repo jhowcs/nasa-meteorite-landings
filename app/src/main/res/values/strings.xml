@@ -8,4 +8,8 @@
     <string name="label_lat">Latitude</string>
     <string name="label_long">Longitude</string>
     <string name="detail_screen_title">Meteor\'s Detail</string>
+    <string name="share">Share</string>
+    <string name="share_create_chooser_title">Share this Meteoriote</string>
+    <string formatted="false" name="share_text">Did you know that the meteorite %s has %.2f of mass?</string>
+
 </resources>
