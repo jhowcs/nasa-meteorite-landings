@@ -98,9 +98,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onItemClicked(MeteoriteModel meteoriteLandingsObj) {
-        Intent intent = new Intent(this, NasaMeteoriteDetail.class);
+        Intent intent = new Intent(this, MeteoriteDetailActivity.class);
 
-        intent.putExtra(NasaMeteoriteDetail.NASA_METEORITE_PARCELABLE, meteoriteLandingsObj);
+        intent.putExtra(MeteoriteDetailActivity.NASA_METEORITE_PARCELABLE, meteoriteLandingsObj);
 
         startActivity(intent);
     }

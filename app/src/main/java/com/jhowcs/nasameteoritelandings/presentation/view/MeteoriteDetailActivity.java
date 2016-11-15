@@ -25,7 +25,7 @@ import com.jhowcs.nasameteoritelandings.presentation.model.MeteoriteModel;
  * Created by jonathan_campos on 27/10/2016.
  */
 
-public class NasaMeteoriteDetail extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
+public class MeteoriteDetailActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
 
     private MapView mMapView;
     private GoogleMap mGoogleMap;
@@ -44,7 +44,7 @@ public class NasaMeteoriteDetail extends AppCompatActivity implements OnMapReady
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.nasa_meteorite_detail);
+        setContentView(R.layout.meteorite_detail);
 
         mMapView = (MapView) findViewById(R.id.map);
         txtClass = (TextView) findViewById(R.id.detail_txtClass);

@@ -20,7 +20,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_api_key"/>
 
-        <activity android:name=".presentation.view.NasaMeteoriteDetail" android:parentActivityName=".presentation.view.MainActivity"/>
+        <activity android:name=".presentation.view.MeteoriteDetailActivity" android:parentActivityName=".presentation.view.MainActivity"/>
 
         <service android:name=".data.datasync.AuthenticatorService">
             <intent-filter>
