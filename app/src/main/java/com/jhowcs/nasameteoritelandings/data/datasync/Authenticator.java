@@ -1,4 +1,4 @@
-package com.jhowcs.nasameteoritelandings.datasync;
+package com.jhowcs.nasameteoritelandings.data.datasync;
 
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;

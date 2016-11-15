@@ -3,7 +3,7 @@ package com.jhowcs.nasameteoritelandings;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.jhowcs.nasameteoritelandings.view.MainActivity;
+import com.jhowcs.nasameteoritelandings.presentation.view.MainActivity;
 
 import org.junit.Rule;
 import org.junit.Test;

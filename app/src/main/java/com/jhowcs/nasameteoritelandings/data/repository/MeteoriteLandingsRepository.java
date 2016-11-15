@@ -1,4 +1,4 @@
-package com.jhowcs.nasameteoritelandings.repository;
+package com.jhowcs.nasameteoritelandings.data.repository;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -9,8 +9,8 @@ import android.support.annotation.NonNull;
 
 import com.jhowcs.nasameteoritelandings.data.DBContract;
 import com.jhowcs.nasameteoritelandings.data.DBHelper;
-import com.jhowcs.nasameteoritelandings.model.Geolocation;
-import com.jhowcs.nasameteoritelandings.model.NasaMeteoriteLandings;
+import com.jhowcs.nasameteoritelandings.data.entity.Geolocation;
+import com.jhowcs.nasameteoritelandings.data.entity.NasaMeteoriteLandings;
 
 import java.util.Arrays;
 

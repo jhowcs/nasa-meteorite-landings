@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".view.MainActivity" android:launchMode="singleTop">
+        <activity android:name=".presentation.view.MainActivity" android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,9 +20,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_api_key"/>
 
-        <activity android:name=".view.NasaMeteoriteDetail" android:parentActivityName=".view.MainActivity"/>
+        <activity android:name=".presentation.view.NasaMeteoriteDetail" android:parentActivityName=".presentation.view.MainActivity"/>
 
-        <service android:name=".datasync.AuthenticatorService">
+        <service android:name=".data.datasync.AuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator"/>
             </intent-filter>
@@ -31,12 +31,12 @@
         </service>
 
         <provider
-            android:name="com.jhowcs.nasameteoritelandings.data.MeteorLandProvider"
+            android:name="com.jhowcs.nasameteoritelandings.data.MeteoriteProvider"
             android:authorities="@string/content_authority"
             android:exported="false"
             android:syncable="true" />
 
-        <service android:name=".datasync.SyncService"
+        <service android:name=".data.datasync.SyncService"
             android:exported="true" >
 
             <intent-filter>

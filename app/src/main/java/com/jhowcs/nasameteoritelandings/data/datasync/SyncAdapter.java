@@ -1,32 +1,23 @@
-package com.jhowcs.nasameteoritelandings.datasync;
+package com.jhowcs.nasameteoritelandings.data.datasync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncResult;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.jhowcs.nasameteoritelandings.BuildConfig;
 import com.jhowcs.nasameteoritelandings.R;
 import com.jhowcs.nasameteoritelandings.data.DBContract;
-import com.jhowcs.nasameteoritelandings.model.NasaMeteoriteLandings;
-import com.jhowcs.nasameteoritelandings.repository.MeteoriteLandingsRepository;
-import com.jhowcs.nasameteoritelandings.service.BaseAPI;
-import com.jhowcs.nasameteoritelandings.service.MeteoriteLandingService;
-import com.jhowcs.nasameteoritelandings.util.DateUtil;
+import com.jhowcs.nasameteoritelandings.data.entity.NasaMeteoriteLandings;
+import com.jhowcs.nasameteoritelandings.data.network.api.MeteoriteAPI;
+import com.jhowcs.nasameteoritelandings.data.repository.MeteoriteLandingsRepository;
 
-import java.io.IOException;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * Created by jonathan_campos on 03/11/2016.
@@ -64,27 +55,16 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      *
      */
     private void synchronizeMeteorite() {
-        Retrofit retrofit = BaseAPI.getRetrofitInstance();
-        MeteoriteLandingService meteoriteLandingService = retrofit.create(MeteoriteLandingService.class);
+        MeteoriteAPI meteoriteAPI = new MeteoriteAPI();
 
-        String dateQuery = DateUtil.getCompleteStringDate(2011);
-
-        Call<List<NasaMeteoriteLandings>> call = meteoriteLandingService.getNasaMeteoriteLandings(dateQuery, BuildConfig.NASA_API);
-
-        Response<List<NasaMeteoriteLandings>> response = null;
-
-        try {
-            response = call.execute();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        List<NasaMeteoriteLandings> response = meteoriteAPI.getNasaMeteoriteLandings();
 
         if(response != null) {
             Cursor cursor = null;
 
             MeteoriteLandingsRepository repository = new MeteoriteLandingsRepository(getContext());
 
-            for (NasaMeteoriteLandings obj: response.body()) {
+            for (NasaMeteoriteLandings obj: response) {
                 cursor = mContentResolver.query(DBContract.MeteorLandEntry.CONTENT_URI,
                         null,
                         DBContract.MeteorLandEntry.COLUMN_ID + " = " + obj.getId(),

@@ -15,7 +15,7 @@ import static com.jhowcs.nasameteoritelandings.data.DBContract.PATH_METEORLAND;
  * Created by jonathan_campos on 03/11/2016.
  */
 
-public class MeteorLandProvider extends ContentProvider {
+public class MeteoriteProvider extends ContentProvider {
 
     private static final UriMatcher mUriMatcher = buildUriMatcher();
 

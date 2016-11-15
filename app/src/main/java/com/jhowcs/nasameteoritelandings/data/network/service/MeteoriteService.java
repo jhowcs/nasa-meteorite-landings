@@ -1,9 +1,7 @@
-package com.jhowcs.nasameteoritelandings.service;
+package com.jhowcs.nasameteoritelandings.data.network.service;
 
-import com.jhowcs.nasameteoritelandings.model.NasaMeteoriteLandings;
-
+import com.jhowcs.nasameteoritelandings.data.entity.NasaMeteoriteLandings;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -13,7 +11,7 @@ import retrofit2.http.Query;
  * Created by jonathan_campos on 25/10/2016.
  */
 
-public interface MeteoriteLandingService {
+public interface MeteoriteService {
 
     /**
      * This comprehensive data set from The Meteoritical Society contains information on all of the

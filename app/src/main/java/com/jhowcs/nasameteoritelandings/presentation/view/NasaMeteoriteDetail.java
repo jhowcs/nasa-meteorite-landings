@@ -1,4 +1,4 @@
-package com.jhowcs.nasameteoritelandings.view;
+package com.jhowcs.nasameteoritelandings.presentation.view;
 
 import android.app.SearchManager;
 import android.content.Intent;
@@ -19,7 +19,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jhowcs.nasameteoritelandings.R;
-import com.jhowcs.nasameteoritelandings.model.NasaMeteoriteLandings;
+import com.jhowcs.nasameteoritelandings.presentation.model.MeteoriteModel;
 
 /**
  * Created by jonathan_campos on 27/10/2016.
@@ -37,7 +37,7 @@ public class NasaMeteoriteDetail extends AppCompatActivity implements OnMapReady
 
     private TextView btnExplore;
 
-    private NasaMeteoriteLandings mMeteoriteObj;
+    private MeteoriteModel mMeteoriteObj;
 
     protected static final String NASA_METEORITE_PARCELABLE = "METEORITE_PARCELABLE";
 
@@ -62,7 +62,7 @@ public class NasaMeteoriteDetail extends AppCompatActivity implements OnMapReady
         setupInformation(mMeteoriteObj);
     }
 
-    private void setupInformation(NasaMeteoriteLandings meteoriteObj) {
+    private void setupInformation(MeteoriteModel meteoriteObj) {
         if(meteoriteObj != null) {
             setTitle(meteoriteObj.getName());
 
